@@ -1,4 +1,62 @@
-﻿using Common.Models;
+﻿/* Note: This project uses PostgreSQL for the database and Entity Framework Core for the ORM. EF 
+ * Core sits in between the program and the database, translating C# code into SQL commands and C# 
+ * objects into records in the database. 
+ * 
+ * To facilitate communications between the program and a database, EF Core needs:
+ * 
+ *      1) Data Provider and,
+ *      2) Data Model (which is a Map to the layout of the entire Database).
+ *  
+ * DATA PROVIDERS
+ *  
+ * A Data Provider is a "a software library consisting of classes that provide data access 
+ * services such as connecting to a data source, executing commands at a data source and fetching 
+ * data from a data source with support to execute commands within transactions. It resides as a 
+ * lightweight layer between data source and code, providing data access services with increased 
+ * performance." (https://www.techopedia.com/definition/25227/net-data-provider). 
+ *  
+ * EF Core can talk to most databases if it has the data provider library for that database. The 
+ * Data Provider for this project is the Npgsql.EntityFrameworkCore.PostgreSQL package. When 
+ * this program runs, Entity Framework will search for a Data Provider. When it finds the  
+ * PostgreSQL data provider, it will determine that this project uses a PostgreSQL database. 
+ *  
+ * EF Core will use a Data Model Map to transform a SQL query into an object model representation
+ * of a query (which is called a canonical command tree) and vice versa. .NET Data Providers can 
+ * consume canonical command trees to talk the database.
+ * 
+ * 
+ * DATA MODEL
+ * 
+ * In order to do two-way translations, the ORM library (EF Core) needs to have a map of the 
+ * database. The Data Model is a topological map of the whole database. The Data Model is a
+ * list of all the tables in the database (Models folder) and their relationships. In this 
+ * project, the Data Model is defined in a file called Context.cs in the DbContext folder. 
+ * 
+ * The Data Model is distinct from a Database Schema; see this StackOverflow Answer from 
+ * richik jaiswal:
+ * 
+ *      A schema is a blueprint of the database which specifies what fields will be present and 
+ *      what would be their types. For example an employee table will have an employee_ID column 
+ *      represented by a string of 10 digits and an employee_Name column with a string of 45 
+ *      characters.
+ *      
+ *      Data model is a high level design implementation which decides what can be present in the 
+ *      schema. It provides a database user with a conceptual framework in which we specify the 
+ *      database requirements of the database user and the structure of the database to fulfill 
+ *      these requirements.
+ *      
+ *      A data model can, for example, be a relational model where the data will be organised in 
+ *      tables whereas the schema for this model would be the set of attributes and their 
+ *      corresponding domains.
+ *      
+ *      (Link: https://stackoverflow.com/questions/25093452/difference-between-data-model-and-database-schema-in-dbms)
+ *
+ * Context.cs serves as a bridge between the model classes (classes that model database tables in 
+ * the Models > Tables folder in the Common project) and database entities (records stored in the 
+ * database). 
+ */
+
+using Common.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
