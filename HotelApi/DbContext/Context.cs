@@ -2,7 +2,7 @@
  * Core sits in between the program and the database, translating C# code into SQL commands and C# 
  * objects into records in the database. 
  * 
- * To facilitate communications between the program and a database, EF Core needs:
+ * To facilitate communications between the program and a database, EF Core needs to know the:
  * 
  *      1) Data Provider and,
  *      2) Data Model (which is a Map to the layout of the entire Database).
@@ -36,7 +36,7 @@
  * richik jaiswal:
  * 
  *      A schema is a blueprint of the database which specifies what fields will be present and 
- *      what would be their types. For example an employee table will have an employee_ID column 
+ *      what their types will be. For example an employee table will have an employee_ID column 
  *      represented by a string of 10 digits and an employee_Name column with a string of 45 
  *      characters.
  *      
@@ -64,17 +64,25 @@ using System.Text;
 
 namespace PostgresEFCore.Providers
 {
+    // DbContext is an EF Core class.
     public class Context : DbContext
     {
+        // This constructor calls the base constructor. "Initializes a new instance of the 
+        // DbContext class using the specified options."
         public Context(DbContextOptions options) : base(options)
         {
             
         }
 
+
+        // DECLARING DATA MODELS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Declare the Hotel Class. Also see the HotelRoom declaration.
             modelBuilder.Entity<Hotel>(entity =>
             {
+                // Declaring columns in the Hotel Table. Primary Keys are declared with HasKey(). 
+                // Other keys are declared with the Property keyword. 
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
@@ -82,8 +90,12 @@ namespace PostgresEFCore.Providers
                 entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(100);
             });
 
+            // Declare the HotelRoom Class. 
             modelBuilder.Entity<HotelRoom>(entity =>
             {
+                // This is where the 'O' in ORM in defined.
+                // Declare columns in the HotelRoom Table. Composite key is declared on the first
+                // line.
                 entity.HasKey(x => new { x.RoomNumber, x.HotelId });
                 entity.Property(x => x.RoomNumber).IsRequired();
                 entity.Property(x => x.HotelId).IsRequired();
@@ -92,11 +104,15 @@ namespace PostgresEFCore.Providers
                 entity.Property(x => x.RoomTypeId).IsRequired();
                 entity.Property(x => x.BedTypeId).IsRequired();
 
-                entity.HasOne(e => e.Hotel)
-                    .WithMany(e => e.HotelRooms)
-                    .HasForeignKey(e => e.HotelId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
+                // This is where the 'R' in ORM in defined. Here, the relationship between Hotel
+                // and HotelRoom is declared. 
+                entity.HasOne(e => e.Hotel)             // HotelRoom is declared to be owned by Hotel objects.
+                    .WithMany(e => e.HotelRooms)        // Hotels will have many HotelRooms.
+                    .HasForeignKey(e => e.HotelId)      // Hotels have the HotelId foreign key.
+                    .OnDelete(DeleteBehavior.Cascade);  // Deletes any dependent entities, so any row that
+                                                        // has a foreign key to the deleted entity. Delete
+                                                        // a hotel and all its hotels rooms will be deleted
+                                                        // as well.
                 entity.HasOne(e => e.BedType);
                 entity.HasOne(e => e.RoomType);
             });
