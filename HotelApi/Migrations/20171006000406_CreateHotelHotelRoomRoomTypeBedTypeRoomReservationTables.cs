@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HotelApi.Migrations
 {
-    public partial class AddHotelHotelRoomBedTypeRoomTypeRoomReservationTables : Migration
+    public partial class CreateHotelHotelRoomRoomTypeBedTypeRoomReservationTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,13 +57,9 @@ namespace HotelApi.Migrations
                     RoomNumber = table.Column<int>(type: "int4", nullable: false),
                     HotelId = table.Column<long>(type: "int8", nullable: false),
                     BedTypeId = table.Column<int>(type: "int4", nullable: false),
-                    BedTypeId1 = table.Column<int>(type: "int4", nullable: true),
-                    BedTypeName = table.Column<string>(type: "text", nullable: true),
                     NightlyRate = table.Column<decimal>(type: "numeric", nullable: false),
                     NumberOfBeds = table.Column<int>(type: "int4", nullable: false),
-                    RoomTypeId = table.Column<int>(type: "int4", nullable: false),
-                    RoomTypeId1 = table.Column<int>(type: "int4", nullable: true),
-                    RoomTypeName = table.Column<string>(type: "text", nullable: true)
+                    RoomTypeId = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,18 +71,6 @@ namespace HotelApi.Migrations
                         principalTable: "Hotels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HotelRooms_BedTypes_BedTypeId1_BedTypeName",
-                        columns: x => new { x.BedTypeId1, x.BedTypeName },
-                        principalTable: "BedTypes",
-                        principalColumns: new[] { "Id", "Name" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HotelRooms_RoomTypes_RoomTypeId1_RoomTypeName",
-                        columns: x => new { x.RoomTypeId1, x.RoomTypeName },
-                        principalTable: "RoomTypes",
-                        principalColumns: new[] { "Id", "Name" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,16 +93,6 @@ namespace HotelApi.Migrations
                         principalColumns: new[] { "RoomNumber", "HotelId" },
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HotelRooms_BedTypeId1_BedTypeName",
-                table: "HotelRooms",
-                columns: new[] { "BedTypeId1", "BedTypeName" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HotelRooms_RoomTypeId1_RoomTypeName",
-                table: "HotelRooms",
-                columns: new[] { "RoomTypeId1", "RoomTypeName" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -11,8 +11,8 @@ using System;
 namespace HotelApi.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20170923030552_AddHotelHotelRoomBedTypeRoomTypeRoomReservationTables")]
-    partial class AddHotelHotelRoomBedTypeRoomTypeRoomReservationTables
+    [Migration("20171006000406_CreateHotelHotelRoomRoomTypeBedTypeRoomReservationTables")]
+    partial class CreateHotelHotelRoomRoomTypeBedTypeRoomReservationTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

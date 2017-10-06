@@ -113,8 +113,6 @@ namespace PostgresEFCore.Providers
                                                         // has a foreign key to the deleted entity. Delete
                                                         // a hotel and all its hotels rooms will be deleted
                                                         // as well.
-                entity.HasOne(e => e.BedType);
-                entity.HasOne(e => e.RoomType);
             });
 
             modelBuilder.Entity<RoomReservation>(entity => {
