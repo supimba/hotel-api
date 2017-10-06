@@ -38,9 +38,6 @@ namespace PostgresEFCore.Providers
                     .WithMany(e => e.HotelRooms)
                     .HasForeignKey(e => e.HotelId)
                     .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(e => e.BedType);
-                entity.HasOne(e => e.RoomType);
             });
 
             modelBuilder.Entity<RoomReservation>(entity => {
