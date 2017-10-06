@@ -1,4 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿/* Note: The Factories folder holds a single 'factory' file which creates the Database Context.
+ *
+ * This file, MyDbContextFactory.cs, tells Entity Framework Core ORM that this project is using 
+ * PostgreSQL for the database. It passes the connection string, hostname, username, database 
+ * password and database name to EF Core. Edit this file to direct Entity Framework to recognize 
+ * other databases.
+ */
+
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
