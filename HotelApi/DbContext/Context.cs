@@ -116,15 +116,16 @@ namespace PostgresEFCore.Providers
             });
 
             modelBuilder.Entity<RoomReservation>(entity => {
-                entity.HasKey(e => new { e.RoomId, e.HotelId, e.StartDate, e.EndDate });
+                entity.HasKey(e => e.ReservationId);
+                entity.Property(e => e.ReservationId).IsRequired().ValueGeneratedOnAdd();
                 entity.Property(e => e.HotelId).IsRequired();
-                entity.Property(e => e.RoomId).IsRequired();
+                entity.Property(e => e.RoomNumber).IsRequired();
                 entity.Property(e => e.StartDate).IsRequired();
                 entity.Property(e => e.EndDate).IsRequired();
 
                 entity.HasOne(e => e.HotelRoom)
                     .WithMany(e => e.RoomReservations)
-                    .HasForeignKey(e => new { e.RoomId, e.HotelId })
+                    .HasForeignKey(e => new { e.RoomNumber, e.HotelId })
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
