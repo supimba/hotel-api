@@ -230,7 +230,7 @@ namespace HotelApi.Controllers
         }
 
         // GET: api/Hotel/Room/Reservation
-        [HttpGet]
+        [HttpGet("Room/Reservations")]
         public IEnumerable<RoomReservation> GetRoomReservations()
         {
             return _context.RoomReservations;
