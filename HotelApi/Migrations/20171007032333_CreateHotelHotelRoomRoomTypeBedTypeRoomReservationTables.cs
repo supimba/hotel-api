@@ -54,7 +54,7 @@ namespace HotelApi.Migrations
                 name: "HotelRooms",
                 columns: table => new
                 {
-                    RoomNumber = table.Column<int>(type: "int4", nullable: false),
+                    RoomNumber = table.Column<long>(type: "int8", nullable: false),
                     HotelId = table.Column<long>(type: "int8", nullable: false),
                     BedTypeId = table.Column<int>(type: "int4", nullable: false),
                     NightlyRate = table.Column<decimal>(type: "numeric", nullable: false),
@@ -77,18 +77,19 @@ namespace HotelApi.Migrations
                 name: "RoomReservations",
                 columns: table => new
                 {
-                    RoomId = table.Column<int>(type: "int4", nullable: false),
+                    ReservationId = table.Column<long>(type: "int8", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    EndDate = table.Column<DateTime>(type: "timestamp", nullable: false),
                     HotelId = table.Column<long>(type: "int8", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp", nullable: false)
+                    RoomNumber = table.Column<long>(type: "int8", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomReservations", x => new { x.RoomId, x.HotelId, x.StartDate, x.EndDate });
-                    table.UniqueConstraint("AK_RoomReservations_EndDate_HotelId_RoomId_StartDate", x => new { x.EndDate, x.HotelId, x.RoomId, x.StartDate });
+                    table.PrimaryKey("PK_RoomReservations", x => x.ReservationId);
                     table.ForeignKey(
-                        name: "FK_RoomReservations_HotelRooms_RoomId_HotelId",
-                        columns: x => new { x.RoomId, x.HotelId },
+                        name: "FK_RoomReservations_HotelRooms_RoomNumber_HotelId",
+                        columns: x => new { x.RoomNumber, x.HotelId },
                         principalTable: "HotelRooms",
                         principalColumns: new[] { "RoomNumber", "HotelId" },
                         onDelete: ReferentialAction.Cascade);

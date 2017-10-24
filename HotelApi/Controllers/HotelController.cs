@@ -69,7 +69,7 @@ namespace HotelApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HotelExists(id))
+                if (!hotelExists(id))
                 {
                     return NotFound();
                 }
@@ -118,9 +118,241 @@ namespace HotelApi.Controllers
             return Ok(hotel);
         }
 
-        private bool HotelExists(long id)
+        // GET: api/Hotel/Room
+        [HttpGet("Room")]
+        public IEnumerable<HotelRoom> GetHotelRooms()
+        {
+            return _context.HotelRooms;
+        }
+
+        // GET: api/Hotel/2/Room/5
+        [HttpGet("{id}/Room/{roomNumber}")]
+        public async Task<IActionResult> GetHotelRoom([FromRoute] long id, [FromRoute] long roomNumber)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var hotelRoom = await _context.HotelRooms.SingleOrDefaultAsync(m => m.RoomNumber == roomNumber && m.HotelId == id);
+
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(hotelRoom);
+        }
+
+        // PUT: api/Hotel/2/Room/5
+        [HttpPut("{id}/Room/{roomNumber}")]
+        public async Task<IActionResult> PutHotelRoom([FromRoute] int id, [FromRoute] long roomNumber, [FromBody] HotelRoom hotelRoom)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != hotelRoom.RoomNumber)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(hotelRoom).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!hotelRoomExists(id, roomNumber))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Hotel/5/Room
+        [HttpPost("{id}")]
+        public async Task<IActionResult> PostHotelRoom([FromRoute] long id, [FromBody] HotelRoom hotelRoom)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.HotelRooms.Add(hotelRoom);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (hotelRoomExists(id, hotelRoom.RoomNumber))
+                {
+                    return new StatusCodeResult(StatusCodes.Status409Conflict);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetHotelRoom", new { id = hotelRoom.RoomNumber }, hotelRoom);
+        }
+
+        // DELETE: api/Hotel/2/Room/5
+        [HttpDelete("{id}/Room/{roomNumber}")]
+        public async Task<IActionResult> DeleteHotelRoom([FromRoute] long id, [FromRoute] long roomNumber)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var hotelRoom = await _context.HotelRooms.SingleOrDefaultAsync(m => m.RoomNumber == roomNumber && m.HotelId == id);
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
+
+            _context.HotelRooms.Remove(hotelRoom);
+            await _context.SaveChangesAsync();
+
+            return Ok(hotelRoom);
+        }
+
+        // GET: api/Hotel/Room/Reservation
+        [HttpGet("Room/Reservations")]
+        public IEnumerable<RoomReservation> GetRoomReservations()
+        {
+            return _context.RoomReservations;
+        }
+
+        // GET: api/Hotel/2/Room/6/Reservation/5
+        [HttpGet("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
+        public async Task<IActionResult> GetRoomReservationForRoom([FromRoute] long id, [FromRoute] long roomNumber, [FromRoute] long reservationId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var roomReservation = await _context.RoomReservations.SingleOrDefaultAsync(m => m.RoomNumber == id && m.HotelId == id && m.ReservationId == reservationId);
+
+            if (roomReservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(roomReservation);
+        }
+
+        // PUT: api/Hotel/8/Room/3/Reservation/5
+        [HttpPut("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
+        public async Task<IActionResult> PutRoomReservation([FromRoute] long id, [FromRoute] long roomNumber, [FromRoute] long reservationId, [FromBody] RoomReservation roomReservation)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != roomReservation.RoomNumber)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(roomReservation).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!roomReservationExists(id, roomNumber, reservationId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Hotel/8/Room/5/Reservation/4
+        [HttpPost("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
+        public async Task<IActionResult> PostRoomReservation([FromRoute] long id, [FromRoute] long roomNumber, [FromRoute] long reservationId, [FromBody] RoomReservation roomReservation)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.RoomReservations.Add(roomReservation);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (roomReservationExists(id, roomNumber, reservationId))
+                {
+                    return new StatusCodeResult(StatusCodes.Status409Conflict);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetRoomReservation", new { id = roomReservation.RoomNumber }, roomReservation);
+        }
+
+        // DELETE: api/Hotel/8/Room/3/Reservation/5
+        [HttpDelete("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
+        public async Task<IActionResult> DeleteRoomReservation([FromRoute] int id, [FromRoute] long roomNumber, [FromRoute] long reservationId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var roomReservation = await _context.RoomReservations.SingleOrDefaultAsync(m => m.RoomNumber == roomNumber && m.HotelId == id && m.ReservationId == reservationId);
+            if (roomReservation == null)
+            {
+                return NotFound();
+            }
+
+            _context.RoomReservations.Remove(roomReservation);
+            await _context.SaveChangesAsync();
+
+            return Ok(roomReservation);
+        }
+
+        private bool hotelExists(long id)
         {
             return _context.Hotels.Any(e => e.Id == id);
+        }
+
+        private bool hotelRoomExists(long id, long roomNumber)
+        {
+            return _context.HotelRooms.Any(e => e.RoomNumber == roomNumber && e.HotelId == id);
+        }
+
+        private bool roomReservationExists(long id, long roomNumber, long reservationId)
+        {
+            return _context.RoomReservations.Any(e => e.RoomNumber == id);
         }
     }
 }

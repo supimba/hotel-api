@@ -56,7 +56,7 @@ namespace HotelApi.Migrations
 
             modelBuilder.Entity("Common.Models.HotelRoom", b =>
                 {
-                    b.Property<int>("RoomNumber");
+                    b.Property<long>("RoomNumber");
 
                     b.Property<long>("HotelId");
 
@@ -89,17 +89,20 @@ namespace HotelApi.Migrations
 
             modelBuilder.Entity("Common.Models.RoomReservation", b =>
                 {
-                    b.Property<int>("RoomId");
-
-                    b.Property<long>("HotelId");
-
-                    b.Property<DateTime>("StartDate");
+                    b.Property<long>("ReservationId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("EndDate");
 
-                    b.HasKey("RoomId", "HotelId", "StartDate", "EndDate");
+                    b.Property<long>("HotelId");
 
-                    b.HasAlternateKey("EndDate", "HotelId", "RoomId", "StartDate");
+                    b.Property<long>("RoomNumber");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("ReservationId");
+
+                    b.HasIndex("RoomNumber", "HotelId");
 
                     b.ToTable("RoomReservations");
                 });
@@ -136,7 +139,7 @@ namespace HotelApi.Migrations
                 {
                     b.HasOne("Common.Models.HotelRoom", "HotelRoom")
                         .WithMany("RoomReservations")
-                        .HasForeignKey("RoomId", "HotelId")
+                        .HasForeignKey("RoomNumber", "HotelId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
