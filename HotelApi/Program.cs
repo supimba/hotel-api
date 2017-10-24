@@ -1,4 +1,24 @@
-﻿using System;
+﻿/* PROGRAM ARCHITECTURE
+ *
+ * Here is a reminder of the program structure:
+ * 
+ * The Hotel Reservation project uses the 3-Tier architecture to separate the UI, Business logic 
+ * and Data access layers. The Data layer should be accessible independent of main program and 
+ * therefore, the DAL was carved out of the main project into the HotelApi project. The Common
+ * project is the business logic layer that merely defines model classes that will be consumed by
+ * HotelApi and Hotel Reservation Sytsem (HRP). The HRP project is the main project and the
+ * presentation layer of this program. It a console application that exposes a text-based UI to the
+ * user.
+ * 
+ * HotelApi is partially structured in the Model-View-Controller (MVC) architectural pattern. Know
+ * that HotelApi is a WebAPI and as such, it does not need to implement Views (V). What the HotelApi
+ * project does is implement Controllers (C) and get its Models (M) from the Common project.
+ *
+ * In the Controllers folder, see ValuesController.cs for an explanation of Controllers.
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

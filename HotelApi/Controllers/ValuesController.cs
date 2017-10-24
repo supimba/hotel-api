@@ -1,4 +1,12 @@
-﻿// Auto-generated when the project was created.
+﻿/* CONTROLLER CLASSES
+ * This file was auto-generated when the project was created.
+ * 
+ * The main point of HotelApi is to define controllers. The Controller refers to the C in the MVC
+ * pattern. What is a controller? An application has inputs. Each input needs logic to determine
+ * what needs to be done with it. The controller holds that logic.
+ * 
+
+ */
 
 
 using System;
