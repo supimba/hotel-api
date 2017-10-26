@@ -1,4 +1,11 @@
-﻿using System;
+﻿/* CONTROLLER CLASSES
+ * The main point of HotelApi is to define controllers. The Controller refers to the C in the MVC
+ * pattern. What is a controller? An application has inputs. Each input needs logic to determine
+ * what needs to be done with it. A controller holds logic to manage inputs.
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
