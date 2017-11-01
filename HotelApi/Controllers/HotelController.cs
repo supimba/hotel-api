@@ -1,7 +1,8 @@
 ﻿/* CONTROLLER CLASSES
- * The main point of HotelApi is to define controllers. The Controller refers to the C in the MVC
- * pattern. What is a controller? An application has inputs. Each input needs logic to determine
- * what needs to be done with it. A controller holds logic to manage inputs.
+ * The main point of the HotelApi project is to define controllers. The Controller refers to the C
+ * in the MVC pattern. What is a controller? When a user provides input to an application,
+ * controllers process and respond to it. Controllers contain logic to query and alter models, and
+ * to create and update new views. 
  */
 
 

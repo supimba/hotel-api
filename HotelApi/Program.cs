@@ -1,10 +1,10 @@
 ﻿/* THE ARCHITECTURE OF THE HOTELAPI PROJECT
  *
- * This project encapsulates the Data Access Layer of the Hotel Reservation System Project. It is
- * designed as a WebAPI project and intended to be a standalone program that runs on a server.
- * Its intended client is Hotel Reservation System (HRS), but it is designed to be language and 
- * program agnostic. In other words, HotelApi can talk to clients besides HRS, not to mention 
- * clients written in other languages.
+ * This project encapsulates the Data Access Layer and the Controllers of the Hotel Reservation
+ * System Project. It is designed as a WebAPI project and intended to be a standalone program that
+ * runs on a server. Its intended client is Hotel Reservation System (HRS), but it is designed to
+ * be language and program agnostic. In other words, HotelApi can talk to clients besides HRS, even
+ * if they are written in other languages.
  *
  * HotelAPI is partially structured in the MVC pattern. Specifically, it gets Models (M) from
  * the Common project and implements Controllers (C). As it is a WebAPI project, it should not and

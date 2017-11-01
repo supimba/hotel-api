@@ -13,7 +13,7 @@
  * services such as connecting to a data source, executing commands at a data source and fetching 
  * data from a data source with support to execute commands within transactions. It resides as a 
  * lightweight layer between data source and code, providing data access services with increased 
- * performance." (https://www.techopedia.com/definition/25227/net-data-provider). 
+ * performance." (Source: https://www.techopedia.com/definition/25227/net-data-provider). 
  *  
  * EF Core can talk to most databases if it has the data provider library for that database. The 
  * Data Provider for this project is the Npgsql.EntityFrameworkCore.PostgreSQL package. When 
@@ -49,12 +49,13 @@
  *      tables whereas the schema for this model would be the set of attributes and their 
  *      corresponding domains.
  *      
- *      (Link: https://stackoverflow.com/questions/25093452/difference-between-data-model-and-database-schema-in-dbms)
+ *      (Source: https://stackoverflow.com/questions/25093452/difference-between-data-model-and-database-schema-in-dbms)
  *
  * Context.cs serves as a bridge between the model classes (classes that model database tables in 
- * the Models > Tables folder in the Common project) and database entities (records stored in the 
+ * the Models/Tables folder in the Common project) and database entities (records stored in the 
  * database). 
  */
+
 
 using Common.Models;
 using Microsoft.EntityFrameworkCore;
