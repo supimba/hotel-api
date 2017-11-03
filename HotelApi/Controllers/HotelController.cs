@@ -18,6 +18,14 @@ using PostgresEFCore.Providers;
 
 namespace HotelApi.Controllers
 {
+    /* CLASS ATTRIBUTES: Attributes are often used on methods and properties, but they can be added
+     * to the class. What the attributes do depend on which ones were included. Attributes can be
+     * thought of as helper tags. Sample use cases: You can use attributes to require that a user 
+     * has to be authenticated to be able to use that class, or specify a middleware, an exception
+     * handler, or just extra information the class can use.
+     *
+     * For HotelController, the attributes add metadata to the assemblies.
+     */
     [Produces("application/json")]
     [Route("api/Hotel")]
     public class HotelController : Controller

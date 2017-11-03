@@ -1,12 +1,15 @@
-﻿/* Note: This project uses PostgreSQL for the database and Entity Framework Core for the ORM. EF 
- * Core sits in between the program and the database, translating C# code into SQL commands and C# 
- * objects into records in the database. 
- * 
+﻿/* SETTING UP COMMUNICATIONS BETWEEN THE PROGRAM AND THE DATABASE
+ *
+ * This project uses PostgreSQL for the database and Entity Framework Core for the ORM. EF Core
+ * acts as a bridge between the program and the database, translating C# code into SQL commands
+ * and C# objects into records in the database.
+ *
  * To facilitate communications between the program and a database, EF Core needs to know the:
  * 
  *      1) Data Provider and,
  *      2) Data Model (which is a Map to the layout of the entire Database).
- *  
+ *
+ * 
  * DATA PROVIDERS
  *  
  * A Data Provider is a "a software library consisting of classes that provide data access 
@@ -15,14 +18,17 @@
  * lightweight layer between data source and code, providing data access services with increased 
  * performance." (Source: https://www.techopedia.com/definition/25227/net-data-provider). 
  *  
- * EF Core can talk to most databases if it has the data provider library for that database. The 
- * Data Provider for this project is the Npgsql.EntityFrameworkCore.PostgreSQL package. When 
- * this program runs, Entity Framework will search for a Data Provider. When it finds the  
- * PostgreSQL data provider, it will determine that this project uses a PostgreSQL database. 
+ * EF Core can talk to any database if it has the data provider library for it. The Data Provider
+ * for this project is the Npgsql.EntityFrameworkCore.PostgreSQL package, which was added via Nuget.
+ * When HotelApi runs, Entity Framework will search for a Data Provider. EF Core will use the Data
+ * Provider to determine that this project uses a PostgreSQL database. 
  *  
  * EF Core will use a Data Model Map to transform a SQL query into an object model representation
  * of a query (which is called a canonical command tree) and vice versa. .NET Data Providers can 
  * consume canonical command trees to talk the database.
+ *
+ * Go the Factories folder and open MyDbContextFactory.cs. The PostgreSQL data provider is defined 
+ * in that file.
  * 
  * 
  * DATA MODEL
@@ -53,7 +59,24 @@
  *
  * Context.cs serves as a bridge between the model classes (classes that model database tables in 
  * the Models/Tables folder in the Common project) and database entities (records stored in the 
- * database). 
+ * database).
+ *
+ *
+ ***************************************************************************************************
+ ***************************************************************************************************
+ *
+ * 
+ * CONTEXT CLASS
+ *
+ * This class, Context, inherits from an EF Core class called Microsoft.EntityFrameworkCore.DbContext.
+ * From the docs: "A DbContext instance represents a session with the database and can be used to
+ * query and save instances of your entities." Put succintly, DbContext helps you talk to the
+ * database. To enable EF Core to act as a bridge, it must know the topology of the database. The
+ * programmer must create Context.cs and set it to inherit from DbContext. Then, the programmer has
+ * to outline certain information about the database in Context class.
+ *
+ * In this class, the programmer must use the Models classes (from project Common) to define the
+ * Data Model of the database. 
  */
 
 
