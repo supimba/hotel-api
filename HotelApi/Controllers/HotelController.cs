@@ -1,8 +1,28 @@
-﻿/* CONTROLLER CLASSES
- * The main point of the HotelApi project is to define controllers. The Controller refers to the C
- * in the MVC pattern. What is a controller? When a user provides input to an application,
- * controllers process and respond to it. Controllers contain logic to query and alter models, and
- * to create and update new views. 
+﻿/* CONTROLLER CLASSES AND ENDPOINT METHODS
+ * 
+ * One of the main purposes of the HotelApi project is to define controllers (The other is to set
+ * up the Data Access Layer.). The Controller refers to the C in the MVC pattern. What is a
+ * controller? When a user provides input to an application, controllers process and respond to it.
+ * Controllers contain logic to query and alter models and to create and update new views.
+ *
+ * The Controller for this project is the class, HotelController. In a non-networked program, a
+ * Controller class has normal methods that control application flow by reacting to user actions.
+ * But for networked projects such as this one, where are a multi-tier architecture separates the
+ * project into a user-facing client program, a server-based database backend and Common clases
+ * library, the client must communicate to the database over a network. In this context, 'Network'
+ * can refer to the internet or LANs such as your home network.
+ *
+ * To facilitate inter-program communication, HotelApi must have its Controller class
+ * (HotelController) expose an API to the network. Through this API, any network-based program can
+ * communicate with the database. Therefore, for the special case of networked programs,
+ * HotelController uses a collection of public methods called Endpoints to expose an API to the
+ * network. In the context of an API, Endpoints are just public methods inside Controllers that can
+ * be called through a network. All endpoints are controller methods, but not all controller methods
+ * are endpoints. 
+ * 
+ * The class below features HTTP requests such GET, PUT etc. All network-facing APIs i.e. Endpoints,
+ * that are intended for communicating over the internet use the HTTP protocol to send and receive
+ * requests. 
  */
 
 
@@ -24,14 +44,23 @@ namespace HotelApi.Controllers
      * has to be authenticated to be able to use that class, or specify a middleware, an exception
      * handler, or just extra information the class can use.
      *
-     * For HotelController, the attributes add metadata to the assemblies.
+     * For the HotelController class, the attributes add metadata to the assemblies.
      */
     [Produces("application/json")]
     [Route("api/Hotel")]
     public class HotelController : Controller
     {
+        // This is an instance of class Context. Class Context defines the Data Model of the 
+        // database. All endpoints in this class, which are defined in the methods below, talk to 
+        // the database through _context.
         private readonly Context _context;
-
+        
+        // When this program runs, .NET Core will instantiate HotelController and pass it a Context 
+        // object. When HotelController is instantiated, it assigns a private instance of the 
+        // Context class, with the options that were defined in the MyDbContextFactory class 
+        //(hostname, username, password, connection string and database name), which contains all 
+        // the Model and Relation information that was defined in the Context class. This allows 
+        // the controller methods to have a direct access to the database.
         public HotelController(Context context)
         {
             _context = context;
