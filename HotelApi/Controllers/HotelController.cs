@@ -10,7 +10,8 @@
  * But for networked projects such as this one, where are a multi-tier architecture separates the
  * project into a user-facing client program, a server-based database backend and Common clases
  * library, the client must communicate to the database over a network. In this context, 'Network'
- * can refer to the internet or LANs such as your home network.
+ * can refer to the internet or LANs such as your home network. If the client and server are
+ * running on the same machine, the communication happens only on the local network.
  *
  * To facilitate inter-program communication, HotelApi must have its Controller class
  * (HotelController) expose an API to the network. Through this API, any network-based program can
@@ -20,9 +21,18 @@
  * be called through a network. All endpoints are controller methods, but not all controller methods
  * are endpoints. 
  * 
- * The class below features HTTP requests such GET, PUT etc. All network-facing APIs i.e. Endpoints,
- * that are intended for communicating over the internet use the HTTP protocol to send and receive
- * requests. 
+ * HotelController implements the REST (Representational State Transfer) architecture. It's an
+ * architecture for managing state information in designing distributed systems. "It is not a
+ * standard but a set of constraints, such as being stateless, having a client/server relationship,
+ * and a uniform interface. REST is not strictly related to HTTP, but it is most commonly associated
+ * with it." (Source: https://spring.io/understanding/REST) This class features HTTP requests such
+ * GET, PUT etc. All network-facing APIs i.e. Endpoints, that are intended for communicating over
+ * the internet use the HTTP protocol to send and receive requests.
+ *
+ * NOTE: The methods in this class were all auto-generated. In Visual Studio, right-click the
+ * Controller folder, select Add > Controller > Model. This feature may not exist in IntelliJ Rider;
+ * You may be able to generate it through the terminal. See this link:
+ * https://stackoverflow.com/questions/41011700/how-to-generate-controller-using-dotnetcore-command-line
  */
 
 
@@ -52,7 +62,10 @@ namespace HotelApi.Controllers
     {
         // This is an instance of class Context. Class Context defines the Data Model of the 
         // database. All endpoints in this class, which are defined in the methods below, talk to 
-        // the database through _context.
+        // the database through _context. As this instance is readonly, it prevents modification of 
+        // the model relationships in the class when the program is running, but through this 
+        // instance of Context class, HotelController can perform Create, Read, Update & Delete
+        // (CRUD) operations on the database.
         private readonly Context _context;
         
         // When this program runs, .NET Core will instantiate HotelController and pass it a Context 
@@ -66,6 +79,8 @@ namespace HotelApi.Controllers
             _context = context;
         }
 
+        
+        // This endpoint is returns a Collection of all Hotels in the database. (R in CRUD)
         // GET: api/Hotel
         [HttpGet]
         public IEnumerable<Hotel> GetHotels()
@@ -73,15 +88,26 @@ namespace HotelApi.Controllers
             return _context.Hotels;
         }
 
+
+        // This endpoint method returns a Hotel object from the Database to the client. (R in CRUD)
         // GET: api/Hotel/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHotel([FromRoute] long id)
         {
+            // Task<IActionResult> is the standard response for an asynchronous method.
+            // IActionResult is the standard response type for a synchronous method.
+            
+            // This method's purpose is unknown; it may be checking if all the properties of the
+            // model have values.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            
+            // Note the id argument passed into this method. This line searches the database for an
+            // object matching the id argument. This doesn't have to be done asynchronously, but 
+            // since this will take an unknown amount of time, you don't want this request to block
+            // the running of the rest of the application.
             var hotel = await _context.Hotels.SingleOrDefaultAsync(m => m.Id == id);
 
             if (hotel == null)
@@ -89,25 +115,42 @@ namespace HotelApi.Controllers
                 return NotFound();
             }
 
+            // This line returns an HTTP status code for OK and a hotel object from the database.
+            // The HTTP Status code for OK = 200.
             return Ok(hotel);
         }
 
+        
+        // This method updates a Hotel object in the Database. (U in CRUD)
         // PUT: api/Hotel/5
-        [HttpPut("{id}")]
+        // The statement below (called a route string) is a put request attribute that specifies a 
+        // Hotel Id. It is the Id of the Hotel that this method will update. It is passed in from 
+        // EF Core. (??)
+        [HttpPut("{id}")]        
         public async Task<IActionResult> PutHotel([FromRoute] long id, [FromBody] Hotel hotel)
         {
+            // This method's purpose is unknown.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            
+            // The client makes a request and it comes in over the network. Before proceeding, this 
+            // if statement checks if the Id number is found in the database. The if statement is 
+            // checking if the Id from the route string (see the attribute above this method) 
+            // matches a Hotel Id in the database. (??)
             if (id != hotel.Id)
             {
                 return BadRequest();
             }
 
+            // This statement sets some state property to indicate that the object was modified so 
+            // EF Core will do something with it.
             _context.Entry(hotel).State = EntityState.Modified;
 
+            
+            // This try-catch statement is attempting to save the state change above asynchronously.
+            // It is prepared to catch and handle a concurrency exception that might be thrown.
             try
             {
                 await _context.SaveChangesAsync();
@@ -124,9 +167,14 @@ namespace HotelApi.Controllers
                 }
             }
 
+            // This returns an HTTP status code. NoContent's status code = 204. This is returned
+            // as a IActionResult, which has to be wrapped in Task<> in async methods.
             return NoContent();
         }
 
+        
+        // This endpoint method receives a Hotel object from the client and creates a new Hotel in
+        // the Database. (C in CRUD)
         // POST: api/Hotel
         [HttpPost]
         public async Task<IActionResult> PostHotel([FromBody] Hotel hotel)
@@ -136,11 +184,14 @@ namespace HotelApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            // A Hotel object is added to the Database asynchronously. 
             _context.Hotels.Add(hotel);
             await _context.SaveChangesAsync();
 
+            // Poor Method Name. This instruction is unclear.
             return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
         }
+        
 
         // DELETE: api/Hotel/5
         [HttpDelete("{id}")]
@@ -163,6 +214,7 @@ namespace HotelApi.Controllers
             return Ok(hotel);
         }
 
+        
         // GET: api/Hotel/Room
         [HttpGet("Room")]
         public IEnumerable<HotelRoom> GetHotelRooms()
@@ -170,6 +222,7 @@ namespace HotelApi.Controllers
             return _context.HotelRooms;
         }
 
+        
         // GET: api/Hotel/2/Room/5
         [HttpGet("{id}/Room/{roomNumber}")]
         public async Task<IActionResult> GetHotelRoom([FromRoute] long id, [FromRoute] long roomNumber)
@@ -189,6 +242,7 @@ namespace HotelApi.Controllers
             return Ok(hotelRoom);
         }
 
+        
         // PUT: api/Hotel/2/Room/5
         [HttpPut("{id}/Room/{roomNumber}")]
         public async Task<IActionResult> PutHotelRoom([FromRoute] int id, [FromRoute] long roomNumber, [FromBody] HotelRoom hotelRoom)
@@ -224,6 +278,7 @@ namespace HotelApi.Controllers
             return NoContent();
         }
 
+        
         // POST: api/Hotel/5/Room
         [HttpPost("{id}")]
         public async Task<IActionResult> PostHotelRoom([FromRoute] long id, [FromBody] HotelRoom hotelRoom)
@@ -253,6 +308,7 @@ namespace HotelApi.Controllers
             return CreatedAtAction("GetHotelRoom", new { id = hotelRoom.RoomNumber }, hotelRoom);
         }
 
+        
         // DELETE: api/Hotel/2/Room/5
         [HttpDelete("{id}/Room/{roomNumber}")]
         public async Task<IActionResult> DeleteHotelRoom([FromRoute] long id, [FromRoute] long roomNumber)
@@ -273,6 +329,7 @@ namespace HotelApi.Controllers
 
             return Ok(hotelRoom);
         }
+        
 
         // GET: api/Hotel/Room/Reservation
         [HttpGet("Room/Reservations")]
@@ -281,6 +338,7 @@ namespace HotelApi.Controllers
             return _context.RoomReservations;
         }
 
+        
         // GET: api/Hotel/2/Room/6/Reservation/5
         [HttpGet("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
         public async Task<IActionResult> GetRoomReservationForRoom([FromRoute] long id, [FromRoute] long roomNumber, [FromRoute] long reservationId)
@@ -299,6 +357,7 @@ namespace HotelApi.Controllers
 
             return Ok(roomReservation);
         }
+        
 
         // PUT: api/Hotel/8/Room/3/Reservation/5
         [HttpPut("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
@@ -335,6 +394,7 @@ namespace HotelApi.Controllers
             return NoContent();
         }
 
+        
         // POST: api/Hotel/8/Room/5/Reservation/4
         [HttpPost("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
         public async Task<IActionResult> PostRoomReservation([FromRoute] long id, [FromRoute] long roomNumber, [FromRoute] long reservationId, [FromBody] RoomReservation roomReservation)
@@ -364,6 +424,7 @@ namespace HotelApi.Controllers
             return CreatedAtAction("GetRoomReservation", new { id = roomReservation.RoomNumber }, roomReservation);
         }
 
+        
         // DELETE: api/Hotel/8/Room/3/Reservation/5
         [HttpDelete("{id}/Room/{roomNumber}/Reservation/{reservationId}")]
         public async Task<IActionResult> DeleteRoomReservation([FromRoute] int id, [FromRoute] long roomNumber, [FromRoute] long reservationId)
@@ -385,15 +446,18 @@ namespace HotelApi.Controllers
             return Ok(roomReservation);
         }
 
+        
         private bool hotelExists(long id)
         {
             return _context.Hotels.Any(e => e.Id == id);
         }
 
+        
         private bool hotelRoomExists(long id, long roomNumber)
         {
             return _context.HotelRooms.Any(e => e.RoomNumber == roomNumber && e.HotelId == id);
         }
+        
 
         private bool roomReservationExists(long id, long roomNumber, long reservationId)
         {

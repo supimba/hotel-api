@@ -91,6 +91,14 @@ namespace PostgresEFCore.Providers
     // DbContext is an EF Core class.
     public class Context : DbContext
     {
+        // This is list of Models that will be turned into Tables in the Database.
+        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<HotelRoom> HotelRooms { get; set; }
+        public virtual DbSet<RoomReservation> RoomReservations { get; set; }
+        public virtual DbSet<RoomType> RoomTypes { get; set; }
+        public virtual DbSet<BedType> BedTypes { get; set; }
+        
+        
         // This constructor calls the base constructor. "Initializes a new instance of the 
         // DbContext class using the specified options."
         public Context(DbContextOptions options) : base(options)
@@ -166,11 +174,6 @@ namespace PostgresEFCore.Providers
             });
         }
 
-        public virtual DbSet<Hotel> Hotels { get; set; }
-        public virtual DbSet<HotelRoom> HotelRooms { get; set; }
-        public virtual DbSet<RoomReservation> RoomReservations { get; set; }
-        public virtual DbSet<RoomType> RoomTypes { get; set; }
-        public virtual DbSet<BedType> BedTypes { get; set; }
 
         public void FixState()
         {
