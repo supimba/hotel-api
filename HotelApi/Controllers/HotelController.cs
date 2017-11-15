@@ -91,6 +91,18 @@ namespace HotelApi.Controllers
 
         // This endpoint method returns a Hotel object from the Database to the client. (R in CRUD)
         // GET: api/Hotel/5
+        // ROUTE VARIABLE
+        // Note the attribute below; it's an http GET request. You cannot directly invoke methods 
+        // over the network. Instead, when you have to call an endpoint in a Web API, you use a  
+        // string called a route. Through the route, you send all data that the method will need. 
+        // Routes are unique; you must craft a different one for each endpoint. This endpoint 
+        // specifies its requirements in its parameters: To get a hotel, it requires the caller to 
+        // provide the ID of that hotel. So, the client program must specify the arguments to this
+        // endpoints in the route. In the attribute, {id} is a route variable that corresponds to 
+        // the id parameter of this endpoint. {id} must be a long as demanded by the parameter. 
+
+        // Attribute Routing: https://docs.microsoft.com/en-us/aspnet/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2
+        // Incoming   
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHotel([FromRoute] long id)
         {
