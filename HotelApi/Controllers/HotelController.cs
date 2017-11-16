@@ -91,16 +91,43 @@ namespace HotelApi.Controllers
 
         // This endpoint method returns a Hotel object from the Database to the client. (R in CRUD)
         // GET: api/Hotel/5
-        // ROUTE VARIABLE
-        // Note the attribute below; it's an http GET request. You cannot directly invoke methods 
-        // over the network. Instead, when you have to call an endpoint in a Web API, you use a  
-        // string called a route. Through the route, you send all data that the method will need. 
-        // Routes are unique; you must craft a different one for each endpoint. This endpoint 
-        // specifies its requirements in its parameters: To get a hotel, it requires the caller to 
-        // provide the ID of that hotel. So, the client program must specify the arguments to this
-        // endpoints in the route. In the attribute, {id} is a route variable that corresponds to 
-        // the id parameter of this endpoint. {id} must be a long as demanded by the parameter. 
-
+        
+        /* ROUTE VARIABLE
+         * Note the attribute below; it looks like this [HttpGet("{id}")], and it's an http GET
+         * request. A client program cannot directly invoke methods on a server program over a
+         * network. Instead, when a client wants to call an endpoint in a Web API, it makes an
+         * HTTP request to the server. In the request body, the client will include all the data
+         * the invoked endpoint will need. This data will be contained in a string called a route. 
+         *
+         * Routes are unique; each endpoint has a unique route. The route must be formatted in this
+         * standardized format: {domain}/{controller}/{action}. The {domain} name is the address 
+         * that hosts the server. The {controller} is the name of the controller. The {action} is a
+         * way to identify and call a specific endpoint in the controller class. Actions can be
+         * numbers or strings and they are defined in an attribute above an endpoint method. Before
+         * using an API, make sure to consult the API documentation to identify the domain,
+         * controller and action values of the endpoint you want to invoke.
+         *
+         * Let's look at some examples:
+         *
+         *     Route: "aws.amazon.com/hostName/Hotel/5"
+         *     Action: "5" or "users/98" or "users/3453/parent/mother/children" 
+         *
+         * 
+         * THE GetHotel() ENDPOINT
+         * 
+         * When the client calls this endpoint, GetHotel(), it will retrieve a Hotel object from
+         * the database and return it to the caller. The domain name is the web address of the
+         * server, the Controller name is Hotel. What is the action name? 
+         *
+         * GetHotel() specifies its input requirements in its parameters: it requires the caller to
+         * provide the ID number of the desired hotel object. The parameter is actually marked with
+         * the [FromRoute] attribute which corresponds to the [HttpGet("{id}")] attribute above
+         * GetHotel(). The action value of this endpoint i.e. the identifying 
+         * So,
+         * the client program must specify the arguments to this
+         * endpoint in the route. In the attribute, {id} is a route variable that corresponds to 
+         * the id parameter of this endpoint. {id} must be a long as demanded by the parameter. 
+         */
         // Attribute Routing: https://docs.microsoft.com/en-us/aspnet/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2
         // Incoming   
         [HttpGet("{id}")]
