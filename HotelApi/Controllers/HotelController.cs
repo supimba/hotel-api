@@ -93,43 +93,59 @@ namespace HotelApi.Controllers
         // GET: api/Hotel/5
         
         /* ROUTE VARIABLE
-         * Note the attribute below; it looks like this [HttpGet("{id}")], and it's an http GET
-         * request. A client program cannot directly invoke methods on a server program over a
-         * network. Instead, when a client wants to call an endpoint in a Web API, it makes an
-         * HTTP request to the server. In the request body, the client will include all the data
-         * the invoked endpoint will need. This data will be contained in a string called a route. 
+         * Just above this endpoint, note this attribute: [HttpGet("{id}")]. It lets the method know
+         * that it will be invoked through incoming HTTP GET requests. Every endpoint has a unique
+         * identifier called a ROUTE and this attribute defines a part of it for the endpoint.
+         * "{id}" is a part of the route called the Action.
          *
-         * Routes are unique; each endpoint has a unique route. The route must be formatted in this
-         * standardized format: {domain}/{controller}/{action}. The {domain} name is the address 
-         * that hosts the server. The {controller} is the name of the controller. The {action} is a
-         * way to identify and call a specific endpoint in the controller class. Actions can be
-         * numbers or strings and they are defined in an attribute above an endpoint method. Before
-         * using an API, make sure to consult the API documentation to identify the domain,
-         * controller and action values of the endpoint you want to invoke.
+         * Why is a route needed when endpoint methods have names? A client program cannot directly
+         * invoke methods on a server program over a network. Instead, when a client wants to call
+         * an endpoint in a Web API, it makes an HTTP request to the server. In the request body,
+         * the client will include all the data the invoked endpoint will need. This data is passed
+         * to the server in a string (via HTTP request) called the route. 
+         *
+         * Before making a call to an endpoint, consult the API documentation to identify the route
+         * of the endpoint you want to invoke. In MVC, the route has a standardized format:
+         * {domain}/{controller}/{action}. The {domain} name is the address that hosts the server.
+         * The {controller} is the name of the controller. The {action} is an identifier for a
+         * specific endpoint in the controller class. Actions are defined in an attribute above an
+         * endpoint method. They can be number or strings; check the type of the endpoint's
+         * paramter.
          *
          * Let's look at some examples:
          *
-         *     Route: "aws.amazon.com/hostName/Hotel/5"
+         *     Route: "aws.amazon.com/hostName/Hotel/5" (domain/controller/action)
          *     Action: "5" or "users/98" or "users/3453/parent/mother/children" 
          *
          * 
          * THE GetHotel() ENDPOINT
          * 
          * When the client calls this endpoint, GetHotel(), it will retrieve a Hotel object from
-         * the database and return it to the caller. The domain name is the web address of the
-         * server, the Controller name is Hotel. What is the action name? 
+         * the database and return it to the caller. The auto-generated comment above this endpoint
+         * notes the general route format: api/Hotel/5. This is a generic, example route, not a real
+         * one. Check the API docs, for GetHotel()'s real route.
          *
-         * GetHotel() specifies its input requirements in its parameters: it requires the caller to
-         * provide the ID number of the desired hotel object. The parameter is actually marked with
-         * the [FromRoute] attribute which corresponds to the [HttpGet("{id}")] attribute above
-         * GetHotel(). The action value of this endpoint i.e. the identifying 
-         * So,
-         * the client program must specify the arguments to this
-         * endpoint in the route. In the attribute, {id} is a route variable that corresponds to 
-         * the id parameter of this endpoint. {id} must be a long as demanded by the parameter. 
+         * The domain name is the web address of the server, the Controller name is Hotel. What
+         * is the action name? GetHotel() specifies its input requirements in its parameters: it
+         * requires the caller to provide the ID number of the desired hotel object. The id
+         * parameter is actually marked with the [FromRoute] attribute which corresponds to the
+         * [HttpGet("{id}")] attribute above GetHotel(). The attribute will invoke this endpoint
+         * when it receives HTTP GET requests with a route that corresponds to this endpoint. 
+         *
+         * The action value of this endpoint ({id}) is a unique identifier for this endpoint. The
+         * action value refers to incoming arguments intended for this endpoint. (??) These
+         * arguments are ID values of hotel objects. This last part, that is marked with question
+         * marks, is not entirely clear. What does action value looks like? How does it help to
+         * distinguish between two endpoints that accept longs when callers cannot invoke by method
+         * name? The answer may be beyond the scope of this comment.
+         * 
+         * So, a client program must specify the arguments to this endpoint in the route. The action
+         * value is the part of the route that will contain hotel ID arguments for this endpoint.
+         * {id} must be a long as demanded by the parameter.
+         *
+         * Potentially Useful Source on Attribute Routing: https://docs.microsoft.com/en-us/aspnet/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2
          */
-        // Attribute Routing: https://docs.microsoft.com/en-us/aspnet/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2
-        // Incoming   
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHotel([FromRoute] long id)
         {
