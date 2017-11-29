@@ -37,10 +37,24 @@
  *
  * GENERATING CONTROLLER CLASSES
  * 
- * The methods in this class were all auto-generated. In Visual Studio, right-click the Controller 
- * folder, select Add | Controller | Model. This feature may not exist in IntelliJ Rider;
- * You may be able to generate it through the terminal. See this link:
+ * The methods in this class were all auto-generated. 
+ * 
+ * VISUAL STUDIO
+ * 
+ * In Visual Studio, right-click the Controller folder, select 
+ * Add | Controller | (API Controller with actions, using Entity Framework). In the message box 
+ * that pops up, select the Model class (Hotel, HotelRoom or RoomReservation), the Data Context 
+ * Class (Context.cs), and the name of the Controller. Do this three times to generate controllers 
+ * for Hotel, HotelRoom and RoomReservation objects. HotelController.cs is an amalgamation of 
+ * these three files. 
+ * 
+ * INTELLIJ RIDER
+ * As of September 11, 2017, this feature does not exist in IntelliJ Rider; you may be able to 
+ * generate it through the terminal. See this link:
  * https://stackoverflow.com/questions/41011700/how-to-generate-controller-using-dotnetcore-command-line
+ * 
+ * Go the the main program folder (hotel-api) and find the project folder (HotelApi). Open a 
+ * command prompt window. If you want to see general options, run 'dotnet ef -help'.
  */
 
 
