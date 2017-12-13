@@ -5,21 +5,22 @@
  * controller? When a user provides input to an application, controllers process and respond to it.
  * Controllers contain logic to query and alter models and to create and update new views.
  *
- * The Controller for this project is the class HotelController. In a non-networked program, a
- * Controller class has normal methods that control application flow by reacting to user actions.
- * But for networked projects such as this one, where a multi-tier architecture separates the
- * project into a user-facing client program, a server-based database backend and Common clases
- * library, the client must communicate to the database over a network. In this context, 'Network'
- * can refer to the internet or LANs such as your home network. If the client and server are
- * running on the same machine, the communication happens only on the local network.
+ * The Controller for this project is the class HotelController. It appears that either .NET Core or
+ * Entity Framework Core magically instantiates this class behind the scenes and uses it direct
+ * control flow. In a non-networked program, a Controller class would contain regular methods that
+ * control application flow by reacting to user actions. But for networked projects such as this
+ * one, where a multi-tier architecture separates the project into a user-facing client program,
+ * a server-based database backend and a Common classes library, the client must communicate to the
+ * database over a network. In this context, 'Network' can refer to the internet or LANs such as
+ * your home network. If the client and server are running on the same machine, the communication
+ * happens only on the local network.
  *
- * To facilitate inter-program communication, HotelApi must have its Controller class
- * (HotelController) expose an API to the network. Through this API, any network-based program can
- * communicate with the database. For the special case of networked programs, HotelController
- * uses a collection of public methods called Endpoints to expose an API to the network. In the
- * context of an API, Endpoints are just public methods inside Controller classes that can be called
- * through a network. All endpoints are controller methods, but not all controller methods
- * are endpoints. 
+ * To facilitate inter-program communication over a network, HotelApi must have its Controller class
+ * (HotelController) expose an API to said network. Through this API, any network-based program can
+ * communicate with the database. In the case of networked programs, APIs are exposed through public
+ * methods called ENDPOINTS. In the context of an API, Endpoints are just public methods inside
+ * Controller classes that can be called over a network. All endpoints are controller methods,
+ * but not all controller methods are endpoints. 
  * 
  * HotelController implements the REST (Representational State Transfer) architecture. It's an
  * architecture for managing state information in designing distributed systems. "It is not a
@@ -29,10 +30,11 @@
  * that are intended for communicating over the internet use the HTTP protocol to send and receive
  * requests.
  *
- * This controller class features HTTP requests such as GET, PUT, POST  etc. that implement Create,
- * Read, Update and Delete (CRUD) operations for Hotel, HotelRoom and RoomReservation objects. The
- * other tables in the database are lookup tables, on which CRUD ops will not be performed. Hence, 
- * only these three tables have endpoints.
+ * Therefore, in this controller class, HotelController, there are many endpoints that feature
+ * HTTP requests such as GET, PUT, POST  etc. These endpoints implement Create, Read, Update and
+ * Delete (CRUD) operations for Hotel, HotelRoom and RoomReservation objects. The other tables in
+ * the database are lookup tables, on which CRUD ops will not be performed; for this reason, only
+ * these three tables have endpoints in this class.
  *
  *
  * GENERATING CONTROLLER CLASSES
@@ -79,7 +81,7 @@ namespace HotelApi.Controllers
      * For the HotelController class, the attributes add metadata to the assemblies. The first
      * attribute probably warns consumers of this class that its output is in JSON. The second
      * attribute specifies that routes to the endpoints in this class must begin with `api/Hotel`.
-     * See below for much more on Route variables, which are very important.
+     * See below for much more on Route variables, which are hugely important.
      */
     [Produces("application/json")]
     [Route("api/Hotel")]
