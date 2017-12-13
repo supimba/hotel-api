@@ -1,9 +1,10 @@
 ﻿/* Note: The Factories folder holds a single 'factory' file which creates the Database Context.
  *
- * This file, MyDbContextFactory.cs, tells the Entity Framework Core ORM that this project is using 
- * PostgreSQL for the database via a Data Provider package. This class passes the connection string,
- * hostname, username, database password and database name to EF Core. Edit this file to direct
- * Entity Framework to recognize other databases.
+ * This file, MyDbContextFactory.cs, is where the Data Provider for this project is declared and
+ * configured. It lets Entity Framework Core know that this project is using PostgreSQL for
+ * the database. This class passes the connection string, hostname, username, database password
+ * and database name to EF Core. Edit this file to direct Entity Framework to recognize other
+ * databases.
  */
 
 
