@@ -12,17 +12,21 @@
  * does not have Views (V) implemented. That is the business of the HRS project. See below for a
  * discussion about this architecture.
  *
-
- *     1. MVC Architecture.txt (HotelApi folder)
- *     2. Database Setup.txt (HotelApi folder)
- *     3. Migrations.txt (Migrations folder)
- *        HotelController.cs (Controllers folder)
+ * This project has a lot of notes, that are essential to learning how this project is structured
+ * and how it operates. Topics include: How the MVC architecture works, Database Setup,
+ * Data Providers, Data Model, Schema, Migrations, Controllers, Endpoints, REST architecture, HTTP
+ * Requests, Route Variables and more. Read the notes in this order:
+ * 
+ *     1. WHAT IS MVC?:                    MVC Architecture.txt (HotelApi folder)
+ *     2. DATABASE SETUP AND CONCEPTS:     Database Setup.txt (HotelApi folder)
+ *     3. ALL ABOUT MIGRATIONS:            Migrations.txt (Migrations folder)
+ *     4. CONTROLLERS & ENDPOINTS:         HotelController.cs (Controllers folder)
  *
  ***************************************************************************************************
  ***************************************************************************************************
  *
  * 
- * Please note that both Program.cs and Startup.cs were auto-generated when a WebAPI project was
+ * Please note that both Program.cs and Startup.cs were auto-generated when this WebAPI project was
  * created.
  */
 
