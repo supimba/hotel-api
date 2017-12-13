@@ -2,9 +2,9 @@
  *
  * This project encapsulates the Data Access Layer and the Controllers of the Hotel Reservation
  * System Project. It is designed as a WebAPI project and intended to be a standalone program that
- * runs on a server. Its intended client is Hotel Reservation System (HRS), but it is designed to
- * be language and program agnostic. In other words, HotelApi can talk to clients besides HRS, even
- * if they are written in other languages.
+ * runs on a server. This project's intended client is Hotel Reservation System (HRS), but it is
+ * designed to be language and program agnostic. In other words, HotelApi can talk to clients
+ * besides HRS, even if they are written in other languages.
  *
  * HotelAPI is partially structured in the MVC pattern. Specifically, it gets Models (M) from
  * the Common project and implements Controllers (C). As it is a WebAPI project, it should not and
@@ -12,7 +12,8 @@
  * discussion about this architecture.
  *
  * For an explanation about Controllers, see HotelController.cs in the Controllers folder.
- * 
+ *
+ *     1. MVC Architecture.txt
  *
  ***************************************************************************************************
  ***************************************************************************************************
@@ -49,25 +50,17 @@
  * code reuse and parallel development."
  * (Source: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) MVC seeks to
  * separate concerns by extracting these components into 3 layers: Model, View, and Controller.
- * Unlike the multi-tier architecture, MVC's components interact in a triangular structure.
+ * Unlike the multi-tier architecture, MVC's components interact in a rectangular structure. To
+ * decipher the diagram that explains this structure, start with the User.
  *
- *
- *                               +----------+
- *                               | DATABASE |
- *                               +----------+
- *
- *                                    ^
- *                                    |
- *                                    |           
- *                                    +
  * 
  *                           +-----------------+
- *                           |                 |
- *        +----------------+ |      MODEL      | <----------------+
- *        | If the Model     |                 |   The Controller |
+ *                           |     MODELS      |
+ *        +----------------+ |                 | <----------------+
+ *        | If the Model     |  (IN DATABASE)  |   The Controller |
  *        | Changes, the     +-----------------+   Manipulates    |
- *        | View gets                              Models         |
- *        | Updated                                               |
+ *        | View gets                              Models in the  |
+ *        | Updated                                DB.            |
  *        |                                                       |
  *        v                                                       +
  *                          The View sends user input
@@ -80,21 +73,24 @@
  *        +                                                       ^
  *        |                                                       |
  *        |                                                       |
- *        |                                        The User issues|
- *        | The User Sees                          orders via the |
- *        | the User         +-----------------+   UI to the      |
- *        | Interface (UI)   |                 |   Controller     |
+ *        | The User                               The User issues|
+ *        | Interface (UI)                         orders via the |
+ *        | presents info    +-----------------+   UI to the      |
+ *        | to the user      |                 |   Controller     |
  *        +--------------->  |     THE USER    | -----------------+
  *                           |                 |
  *                           +-----------------+
  *
  *
+ * The three parts of MVC:
+ * 
  * 1. Model: The model layer consists of classes that define important business entities in your
  *    program. Example: In a Calendar program, Dates, Alarms, Contacts etc. are model objects on
- *    which the program will operate. These objects will be stored in the program's database. The
- *    database is part of the program's DAL, and conceptually, it is included as part of the Model
- *    layer. However, the implementation of a program's data access layer (database) and all its
- *    associated business logic should be separate from the Model layer. 
+ *    which the program will operate. These objects will be stored in the program's database.
+ *
+ *    Despite the fact that the database will contain model objects, the implementation of a
+ *    program's data access layer (the database) and all its associated business logic should be
+ *    separate from the Model layer. 
  *
  * 2. View: "A view is a (visual) representation of its model. It would ordinarily highlight
  *    certain attributes of the model and suppress others. It is thus acting as a presentation
@@ -107,7 +103,14 @@
  *    respond to user-initiated events by issuing orders to models and views. By doing these
  *    things, this layer controls and directs application flow. When it receives user requests
  *    via the UI, Controllers will process, interpret and validate these requests. Then it will
- *    query and modify models and create or update Views to fulfill the user request. 
+ *    query and modify models and create or update Views to fulfill the user request.
+ * 
+ *
+ ***************************************************************************************************
+ ***************************************************************************************************
+ *
+ *
+ * Please note that both Program.cs and Startup.cs were auto-generated.
  */
 
 
